@@ -1,7 +1,29 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using OracleGroupAssignment.Data;
+using OracleGroupAssignment.Models;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("myconnection");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<AuthDbContext>(
+    options => options.UseSqlServer(connectionString));
+
+builder.Services.AddIdentity<AppUser, IdentityRole>(
+    options =>
+    {
+        options.Password.RequiredUniqueChars = 0;
+        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireLowercase = false;
+    })
+    .AddEntityFrameworkStores<AuthDbContext>().AddDefaultTokenProviders();
+
 
 var app = builder.Build();
 
