@@ -12,5 +12,6 @@ namespace OracleGroupAssignment.Data
         {
             
         }
+        public DbSet<OracleGroupAssignment.Models.Customer> Customer { get; set; } = default!;
     }
 }

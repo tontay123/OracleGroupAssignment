@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OracleGroupAssignment.Data;
 using OracleGroupAssignment.Models;
+using OracleGroupAssignment.Repository;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +11,9 @@ var connectionString = builder.Configuration.GetConnectionString("myconnection")
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<ICustomerService, CustomerServiceImp>();
+builder.Services.AddScoped<IInvoiceService, InvoiceServiceImp>();
+builder.Services.AddScoped<DapperDbContext>();
 builder.Services.AddDbContext<AuthDbContext>(
     options => options.UseSqlServer(connectionString));
 
@@ -44,6 +48,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Customer}/{action=Index}/{id?}");
 
 app.Run();
